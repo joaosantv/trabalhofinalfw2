@@ -1,0 +1,344 @@
+/* Estilos do BuildPlanner - tema azul-noite inspirado em Celestia (Genshin Impact) */
+
+@import "tailwindcss";
+
+/* Paleta principal, superficies e cores de raridade */
+:root {
+  --bg-obsidiana: #090c17;
+  --bg-superficie: #111626;
+  --bg-superficie-elevada: #182038;
+  --bg-input: #0b0f1d;
+
+  --borda-sutil: rgba(235, 224, 198, 0.1);
+  --borda-ativa: rgba(229, 197, 112, 0.34);
+
+  --texto-primario: #f4efe2;
+  --texto-secundario: #a7b1c6;
+  --texto-mutado: #707b94;
+
+  /* 5 estrelas (dourado champanhe) */
+  --ouro-metalico: #e2c16b;
+  --ouro-hover: #eed180;
+  --ouro-borda: rgba(226, 193, 107, 0.44);
+  --ouro-brilho-topo: rgba(246, 223, 155, 0.78);
+
+  /* 4 estrelas (prata lunar) */
+  --prata-escovada: #c8d1e2;
+  --prata-borda: rgba(200, 209, 226, 0.34);
+  --prata-brilho-topo: rgba(226, 232, 245, 0.62);
+}
+
+/* Registra cores e fontes no Tailwind */
+@theme {
+  --color-gold: #e2c16b;
+  --color-silver: #c8d1e2;
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Base da pagina com ceu estrelado sutil e nebulosas */
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--texto-primario);
+  background-color: var(--bg-obsidiana);
+  background-image:
+    radial-gradient(66rem 34rem at 12% -10%, rgba(226, 193, 107, 0.13), transparent 62%),
+    radial-gradient(58rem 32rem at 90% -6%, rgba(88, 154, 248, 0.12), transparent 60%),
+    radial-gradient(52rem 30rem at 50% 108%, rgba(162, 126, 219, 0.1), transparent 65%),
+    radial-gradient(1.3px 1.3px at 24px 32px, rgba(244, 239, 226, 0.24), transparent),
+    radial-gradient(1px 1px at 96px 72px, rgba(226, 193, 107, 0.28), transparent),
+    radial-gradient(1.2px 1.2px at 148px 18px, rgba(200, 209, 226, 0.2), transparent);
+  background-size: auto, auto, auto, 180px 140px, 210px 170px, 260px 200px;
+  background-attachment: fixed;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar discreta */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090c17;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(226, 193, 107, 0.24);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(226, 193, 107, 0.42);
+}
+
+/* Fonte Cinzel usada no logo e nos nomes dos personagens */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Fonte monoespacada para niveis, contadores e metas */
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Superficies glassmorphism em azul-noite */
+.glass {
+  position: relative;
+  background: linear-gradient(175deg, rgba(24, 32, 56, 0.84) 0%, rgba(14, 19, 34, 0.92) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--borda-sutil);
+  border-radius: 0.9rem;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 18px 42px -24px rgba(0, 0, 0, 0.9);
+}
+
+/* Destaque para personagens 5 estrelas (dourado) */
+.glass-gold {
+  border-color: var(--ouro-borda);
+  box-shadow:
+    inset 0 1px 0 0 var(--ouro-brilho-topo),
+    0 20px 44px -24px rgba(226, 193, 107, 0.28);
+}
+
+/* Destaque para personagens 4 estrelas (prata) */
+.glass-silver {
+  border-color: var(--prata-borda);
+  box-shadow:
+    inset 0 1px 0 0 var(--prata-brilho-topo),
+    0 20px 44px -24px rgba(200, 209, 226, 0.18);
+}
+
+/* Moldura interna ornamental estilo ficha de personagem */
+.moldura-ornamental::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(226, 193, 107, 0.14);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Divisor com estrela central */
+.divisor-estrela {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(226, 193, 107, 0.72);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.divisor-estrela::before,
+.divisor-estrela::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(226, 193, 107, 0.38), transparent);
+}
+
+/* Carta de personagem com brilho elemental (--el-cor) e reflexo no hover */
+.carta-personagem {
+  transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.carta-personagem::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.07) 48%,
+    transparent 66%
+  );
+  transform: translateX(-115%);
+  transition: transform 0.65s ease;
+  pointer-events: none;
+}
+
+.carta-personagem:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--el-cor, #e2c16b) 62%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    0 20px 42px -18px color-mix(in srgb, var(--el-cor, #e2c16b) 42%, transparent);
+}
+
+.carta-personagem:hover::after {
+  transform: translateX(115%);
+}
+
+/* Inputs, selects e textareas */
+.input {
+  width: 100%;
+  border-radius: 0.6rem;
+  border: 1px solid var(--borda-sutil);
+  background-color: var(--bg-input);
+  padding: 0.65rem 0.85rem;
+  color: var(--texto-primario);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+.input::placeholder {
+  color: var(--texto-mutado);
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--borda-ativa);
+}
+
+.input:focus {
+  border-color: rgba(226, 193, 107, 0.78);
+  background-color: #0e1324;
+  box-shadow: 0 0 0 3px rgba(226, 193, 107, 0.14);
+}
+
+.input option {
+  background-color: var(--bg-superficie);
+  color: var(--texto-primario);
+}
+
+/* Controle deslizante dourado para o nivel do personagem */
+.range-gold {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid var(--borda-sutil);
+  outline: none;
+  cursor: pointer;
+}
+
+.range-gold::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #f6df9b 0%, #c89f35 100%);
+  border: 1px solid #fff3cf;
+  box-shadow: 0 0 12px rgba(226, 193, 107, 0.55);
+  transition: transform 0.15s ease;
+}
+
+.range-gold::-webkit-slider-thumb:hover {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.range-gold::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #f6df9b 0%, #c89f35 100%);
+  border: 1px solid #fff3cf;
+  box-shadow: 0 0 12px rgba(226, 193, 107, 0.55);
+}
+
+/* Botoes */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.6rem;
+  padding: 0.6rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.015em;
+  transition: transform 0.12s ease, background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+  cursor: pointer;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-gold {
+  color: #0b0e1a;
+  background: linear-gradient(135deg, #f3d98b 0%, #d4af4a 55%, #b88d28 100%);
+  border: 1px solid rgba(246, 223, 155, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 10px 24px -14px rgba(226, 193, 107, 0.65);
+}
+
+.btn-gold:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fae5a4 0%, #e2bf5f 55%, #c79a30 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 12px 28px -12px rgba(226, 193, 107, 0.8);
+}
+
+.btn-ghost {
+  color: var(--texto-primario);
+  background: rgba(24, 32, 56, 0.78);
+  border: 1px solid var(--borda-sutil);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--borda-ativa);
+  background: rgba(31, 41, 72, 0.92);
+}
+
+.btn-danger {
+  color: #fecaca;
+  background-color: rgba(239, 68, 68, 0.13);
+  border: 1px solid rgba(248, 113, 113, 0.36);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: rgba(239, 68, 68, 0.24);
+  border-color: rgba(248, 113, 113, 0.62);
+}
+
+/* Animacoes */
+@keyframes surgirSuave {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes girarLento {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animar-entrada {
+  animation: surgirSuave 0.3s ease-out both;
+}
+
+.girar-lento {
+  animation: girarLento 75s linear infinite;
+}
